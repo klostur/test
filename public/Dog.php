@@ -16,7 +16,14 @@ class Dog {
     public function getName() {
         return $this->name;
     }
+    public function setName(string $name):bool {
+        $eMsg = true;
+        (ctype_alpha($name) && strlen($name) < 21) ? $this->name = $name : $eMsg = false;
+        return $eMsg;
+    }
     public static function getNumbOfDogs() {
         return self::$numOfDogs;
     }
 }
+
+$kuca = new Dog('Zuja', 10, 'Red');
