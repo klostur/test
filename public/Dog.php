@@ -25,5 +25,3 @@ class Dog {
         return self::$numOfDogs;
     }
 }
-
-$kuca = new Dog('Zuja', 10, 'Red');

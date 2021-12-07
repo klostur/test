@@ -1,28 +1,21 @@
 <?php
-echo '<h1 class="text-6xl text-center mt-12 font-bold">Stereo Banana</h1>';
+echo '<h1 class="text-6xl text-center mt-12 font-bold">Stereo </h1>';
 include_once 'Dog.php';
 include_once 'process.php';
+// include_once __DIR__ . '/../app/jokes.php';
+$pdo = require '../app/Connection.php';
 
+$sql = 'SELECT * FROM joke';
+    $res = $pdo->query($sql);
 
-
+    while($row = $res->fetch()) {
+        $jokes[] = $row;
+    }
 ?>
 
-<?php
-$servername = "localhost";
-$username = "user";
-$password = "P@ssW0rd";
-
-try {
-  $conn = new PDO("mysql:host=$servername;dbname=ijdb", $username, $password);
-  // set the PDO error mode to exception
-  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  echo "Connected successfully";
-} catch(PDOException $e) {
-  echo "Connection failed: " . $e->getMessage();
-}
-?> 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,6 +25,7 @@ try {
     <script src="ajax.js"></script>
     <title><?php echo $_SERVER['SERVER_SOFTWARE']; ?></title>
 </head>
+
 <body class="text-gray-600 m-12 content-center">
 
     <div>
@@ -48,28 +42,24 @@ try {
                     </h2>
                     <h3><?php echo __DIR__; ?></h3>
                 </div>
+                <div class="container flex-row  gap-20 flex ">
+                    <?php foreach($jokes as $joke) : ?>
+                        <div class="flex flex-col justify-center content-center bg-gray-200 rounded-lg p-4 w-1/2 mb-6">
+                            <h3 class=""><?php echo $joke['joketext'] ?></h3>
+                            <h6><?php echo $joke['jokedate']; ?></h6>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
 
-              
             </nav>
         </div>
         <main class="px-16 py-6 w-1/3 ">
-            <div class="inline-block bg-gray-200 rounded-lg p-20">
-                <?php echo $kuca->setName('test'); ?>
-                <h3><?php echo $kuca->getName(); ?> </h3>
-            </div>
+            
             <div class="container flex py-4 ">
-                <form action="" method="post" name="forma">
-                    <label class="block" for="imja">Write something here: <?php echo rand(1,10); ?></label>
-                    <input class="shadow border rounded mb-4" type="text" name="name" id="imja" onkeyup="changeh1">
-                    <label for="age" class="block font-bold text-red-200">Please enter Dog's age</label>
-                    <input type="number" class="shadow border rounded mb-4" name="age" id="age">
-                    <label for="color" class="block font-bold text-red-200">Please enter your dog's color</label>
-                    <select class="shadow border rounded mb-4 w-full py-2" name="color" id="color">
-                        <option value="red">Red</option>
-                        <option value="green">Green</option>
-                        <option value="blue">Blue</option>
-                        <option value="white">White</option>
-                    </select>
+                <form action="../app/addjoke.php" method="post" name="forma">
+                    <label class="block" for="joke">Write something here: <?php echo rand(1, 10); ?></label>
+                    <input class="shadow border rounded mb-4" type="text" name="joke" id="imja" onkeyup="">
+                    
                     <button type="submit" class="block mt-4 bg-indigo-200 hover:bg-indigo-300 p-2 text-white rounded">Submit your data</button>
                 </form>
             </div>
@@ -107,4 +97,5 @@ try {
         </main>
     </div>
 </body>
+
 </html>
