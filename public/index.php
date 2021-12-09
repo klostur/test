@@ -1,13 +1,19 @@
 <?php
 echo '<h1 class="text-6xl text-center mt-12 font-bold">Stereo KEr</h1>';
+include_once '../includes/jokecount.php';
 $pdo = require_once '../app/Connection.php';
 
-$sql = 'SELECT * FROM joke';
+echo totalJokes($pdo);
+
+// $sql = 'SELECT * FROM joke';
+$sql = 'SELECT joke.id, joke.joketext, name, email FROM 
+        joke INNER JOIN author ON authorid = author.id';
 $res = $pdo->query($sql);
 
 while ($row = $res->fetch()) {
     $jokes[] = $row;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -30,10 +36,11 @@ while ($row = $res->fetch()) {
 
                 <div class="container flex-row  gap-2 flex flex-wrap">
                     <?php foreach ($jokes as $joke) : ?>
-                        <div class="bg-gray-200 rounded-lg p-4 ">
+                        <div class="bg-gray-200 rounded-lg p-4  text-center">
                             <h3 class=""><?php echo $joke['joketext'] ?></h3>
                             <h6><?php echo $joke['jokedate']; ?></h6>
-                            <form action="../app/deletejoke.php" method="post">
+                            <h5>Joke by <?php echo $joke['name']; ?></h5>
+                            <form class="mb-0" action="../app/deletejoke.php" method="post">
                                 <input type="hidden" name="id" value="<?php echo $joke['id'] ?>">
                                 <input type="submit" value="Delete">
                             </form>
